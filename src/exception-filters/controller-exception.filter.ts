@@ -1,10 +1,12 @@
 import { BaseExceptionFilter } from '@nestjs/core';
-import { ArgumentsHost, Catch, HttpServer, Logger } from '@nestjs/common';
+import { ArgumentsHost, Catch, HttpServer } from '@nestjs/common';
 import { ControllerException } from '../exceptions/controller.exception';
+import { PinoLogger } from 'nestjs-pino';
 
 @Catch(ControllerException)
 export class ControllerExceptionFilter extends BaseExceptionFilter {
-  constructor(server: HttpServer, private readonly logger: Logger) {
+  constructor(server: HttpServer, private readonly logger: PinoLogger) {
+    logger.setContext(ControllerExceptionFilter.name);
     super(server);
   }
 
